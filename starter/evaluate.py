@@ -20,8 +20,8 @@ import math
 
 import torch
 
-from starter.model import GPT, Config
-import starter.tokenizer as tokenizer_mod
+from model import GPT, Config
+import tokenizer as tokenizer_mod
 
 
 def load_model(ckpt_path):

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LLM Speedrun — Submission Summary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+  :root{
+    --bg:#EAF0F2;
+    --grid:#C7D6DA;
+    --ink:#16242B;
+    --muted:#5C7480;
+    --paper:#F5F8F9;
+    --signal:#E8622C;
+    --good:#2F6F4E;
+    --line:#B9C9CE;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/40px 40px,
+      var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.55;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:56px 28px 90px;}
+
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--signal);
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  h1{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:clamp(28px,4vw,42px);
+    font-weight:700;
+    margin:0 0 6px;
+    letter-spacing:-0.01em;
+  }
+  .sub{color:var(--muted);font-size:15px;max-width:60ch;margin-bottom:32px;}
+
+  .metabar{
+    display:flex;flex-wrap:wrap;gap:0;
+    border:1px solid var(--line);
+    background:var(--paper);
+    margin-bottom:44px;
+  }
+  .metabar div{
+    flex:1 1 140px;
+    padding:14px 18px;
+    border-right:1px solid var(--line);
+  }
+  .metabar div:last-child{border-right:none;}
+  .metabar .k{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+  .metabar .v{font-family:'IBM Plex Mono',monospace;font-size:19px;font-weight:600;}
+  .metabar .v.signal{color:var(--signal);}
+  .metabar .v.good{color:var(--good);}
+
+  section{margin-bottom:52px;}
+  h2{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    border-bottom:1px solid var(--line);
+    padding-bottom:10px;
+    margin-bottom:24px;
+  }
+
+  /* signature chart */
+  .chart-card{
+    border:1px solid var(--line);
+    background:var(--paper);
+    padding:24px 24px 12px;
+  }
+  .chart-caption{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    color:var(--muted);
+    margin-top:10px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .chart-caption .drop{color:var(--good);font-weight:600;}
+
+  /* run cards */
+  .run{
+    display:grid;
+    grid-template-columns:104px 1fr;
+    gap:18px;
+    padding:18px 0;
+    border-bottom:1px solid var(--grid);
+  }
+  .run:last-child{border-bottom:none;}
+  .run .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--muted);
+    padding-top:2px;
+  }
+  .run .tag .n{display:block;font-size:20px;color:var(--ink);font-weight:700;margin-bottom:2px;}
+  .run.win .tag .n{color:var(--signal);}
+  .run h3{margin:0 0 6px;font-size:15.5px;font-weight:600;}
+  .run p{margin:0 0 8px;font-size:14px;color:#33474F;}
+  .run .metric{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--bg);
+    border:1px solid var(--line);
+    padding:4px 10px;
+  }
+  .run .metric .delta{color:var(--good);font-weight:600;}
+  .run .metric .delta.neutral{color:var(--muted);}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  th,td{
+    text-align:left;
+    padding:9px 12px;
+    border-bottom:1px solid var(--grid);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+  }
+  th{color:var(--muted);font-weight:500;text-transform:uppercase;font-size:10.5px;letter-spacing:.08em;}
+  td.label{font-family:'Inter',sans-serif;color:var(--ink);font-size:13.5px;}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .split .box{border:1px solid var(--line);background:var(--paper);padding:20px;}
+  .split .box .pct{font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;color:var(--signal);}
+  .split .box h4{margin:0 0 4px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600;}
+  .split .box p{font-size:13.5px;color:#33474F;margin:8px 0 0;}
+
+  footer{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    color:var(--muted);
+    border-top:1px solid var(--line);
+    padding-top:18px;
+    margin-top:60px;
+  }
+
+  @media (max-width:600px){
+    .run{grid-template-columns:1fr;}
+    .split{grid-template-columns:1fr;}
+    .metabar div{flex:1 1 45%;border-bottom:1px solid var(--line);}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Plivo · 2,000-Step LLM Speedrun</div>
+  <h1>Six runs, one tokenizer decision,<br>and a batch size that mattered more than expected.</h1>
+  <p class="sub">A from-scratch GPT trained on a mixed English + Hindi corpus, under a hard cap of 2,000 optimizer steps and 2,000,000 parameters. This page walks through what changed, what it cost, and what it bought.</p>
+
+  <div class="metabar">
+    <div><div class="k">Baseline bpb</div><div class="v">2.3718</div></div>
+    <div><div class="k">Final bpb</div><div class="v signal">2.073</div></div>
+    <div><div class="k">Total reduction</div><div class="v good">−12.6%</div></div>
+    <div><div class="k">Params</div><div class="v">1,792,384</div></div>
+    <div><div class="k">Steps</div><div class="v">2,000 / 2,000</div></div>
+  </div>
+
+  <section>
+    <h2>bpb across runs</h2>
+    <div class="chart-card">
+      <svg viewBox="0 0 840 300" width="100%" style="display:block;">
+        <!-- gridlines -->
+        <line x1="60" y1="20" x2="60" y2="250" stroke="#B9C9CE" stroke-width="1"/>
+        <line x1="60" y1="250" x2="810" y2="250" stroke="#B9C9CE" stroke-width="1"/>
+        <text x="30" y="60" font-family="IBM Plex Mono" font-size="11" fill="#5C7480">2.40</text>
+        <text x="30" y="140" font-family="IBM Plex Mono" font-size="11" fill="#5C7480">2.25</text>
+        <text x="30" y="220" font-family="IBM Plex Mono" font-size="11" fill="#5C7480">2.10</text>
+        <line x1="60" y1="55" x2="810" y2="55" stroke="#C7D6DA" stroke-width="1" stroke-dasharray="2 4"/>
+        <line x1="60" y1="135" x2="810" y2="135" stroke="#C7D6DA" stroke-width="1" stroke-dasharray="2 4"/>
+        <line x1="60" y1="215" x2="810" y2="215" stroke="#C7D6DA" stroke-width="1" stroke-dasharray="2 4"/>
+
+        <!-- data: runs 1,2,3,4,5,6 -> bpb 2.3718,2.2833,2.2826,2.2762,2.272,2.073 -->
+        <!-- x positions evenly spaced, y mapped: y = 250 - (2.40-bpb)/(2.40-2.05)*220 -->
+        <polyline fill="none" stroke="#16242B" stroke-width="2"
+          points="90,45.7 210,89.0 330,89.6 450,95.0 570,98.5 810,238.0" />
+        <polyline fill="none" stroke="#E8622C" stroke-width="2.5"
+          points="570,98.5 810,238.0" />
+
+        <!-- points -->
+        <circle cx="90" cy="45.7" r="4.5" fill="#16242B"/>
+        <circle cx="210" cy="89.0" r="4.5" fill="#16242B"/>
+        <circle cx="330" cy="89.6" r="4.5" fill="#16242B"/>
+        <circle cx="450" cy="95.0" r="4.5" fill="#16242B"/>
+        <circle cx="570" cy="98.5" r="4.5" fill="#16242B"/>
+        <circle cx="810" cy="238.0" r="6" fill="#E8622C"/>
+
+        <!-- labels -->
+        <text x="90" y="270" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#5C7480">R1 baseline</text>
+        <text x="210" y="270" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#5C7480">R2</text>
+        <text x="330" y="270" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#5C7480">R3</text>
+        <text x="450" y="270" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#5C7480">R4</text>
+        <text x="570" y="270" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#5C7480">R5</text>
+        <text x="810" y="270" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#E8622C" font-weight="700">R6 final</text>
+
+        <text x="88" y="35" font-family="IBM Plex Mono" font-size="12" fill="#16242B" font-weight="600">2.3718</text>
+        <text x="812" y="228" text-anchor="end" font-family="IBM Plex Mono" font-size="13" fill="#E8622C" font-weight="700">2.073</text>
+      </svg>
+      <div class="chart-caption">
+        <span>Runs 1–5: tokenizer, architecture, and LR changes — steady, incremental descent.</span>
+        <span class="drop">Run 6: batch 8→16 — the single largest single-change drop in the log.</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Run log</h2>
+
+    <div class="run">
+      <div class="tag"><span class="n">01</span>baseline</div>
+      <div>
+        <h3>Unmodified starter code</h3>
+        <p>Byte-level tokenizer (vocab 256), 4-layer attention model, plain Adam, constant LR. Devanagari costs 3 bytes/token — a meaningful chunk of the token budget goes to sub-character units.</p>
+        <span class="metric">bpb <strong>2.3718</strong> <span class="delta neutral">— reference</span></span>
+      </div>
+    </div>
+
+    <div class="run">
+      <div class="tag"><span class="n">02</span>combined</div>
+      <div>
+        <h3>BPE tokenizer + architecture + optimizer, all at once</h3>
+        <p>256-merge BPE (vocab 512, lossless), wider/deeper model with tied weights and scaled init, AdamW with warmup + cosine + clipping. Clear win, but the three changes are entangled — no way yet to say which one is doing the work.</p>
+        <span class="metric">bpb <strong>2.2833</strong> <span class="delta">−3.7%</span></span>
+      </div>
+    </div>
+
+    <div class="run">
+      <div class="tag"><span class="n">03</span>ablation</div>
+      <div>
+        <h3>BPE tokenizer alone, everything else reverted to baseline</h3>
+        <p>Isolates the tokenizer against the original 4-layer model and plain Adam. Result lands within 0.0007 of Run 2 — the tokenizer accounts for essentially the entire gain. Architecture and optimizer changes contributed almost nothing at the original learning rate.</p>
+        <span class="metric">bpb <strong>2.2826</strong> <span class="delta">−3.8%</span></span>
+      </div>
+    </div>
+
+    <div class="run">
+      <div class="tag"><span class="n">04</span>lr sweep</div>
+      <div>
+        <h3>Same v2 config, peak LR 6e-4 → 8e-4</h3>
+        <p>Hypothesis: the larger model from Run 2 needs a higher peak LR to exploit its extra capacity inside a fixed 2,000-step budget. It does — the gap over the tokenizer-only ablation reopens in the model's favor.</p>
+        <span class="metric">bpb <strong>2.2762</strong> <span class="delta">−4.0%</span></span>
+      </div>
+    </div>
+
+    <div class="run">
+      <div class="tag"><span class="n">05</span>lr sweep</div>
+      <div>
+        <h3>Peak LR 8e-4 → 1e-3</h3>
+        <p>Pushing further still helps, but the gain shrinks (−0.0071 → −0.0042) — a sign of approaching the LR ceiling for this step budget before instability sets in.</p>
+        <span class="metric">bpb <strong>2.272</strong> <span class="delta">−4.2%</span></span>
+      </div>
+    </div>
+
+    <div class="run win">
+      <div class="tag"><span class="n">06</span>final</div>
+      <div>
+        <h3>Batch size 8 → 16, everything else identical to Run 5</h3>
+        <p>The single biggest single-change drop in the log — much larger than batch size alone typically explains. Best-guess mechanism: less gradient noise let the already-tuned lr=1e-3 cosine schedule converge more effectively in the same 2,000 steps. Not a clean ablation: batch 16 at the old LR, and batch 8 at 1e-3, were never tested in isolation, so a batch×LR interaction can't be ruled out. Wall time (543s) was also disproportionately higher than Run 5's (285s), so some of that gap may be machine load rather than pure compute cost — flagged, not swept under the rug.</p>
+        <span class="metric">bpb <strong>2.073</strong> <span class="delta">−12.6%</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Final configuration</h2>
+    <table>
+      <tr><th>Component</th><th>Value</th></tr>
+      <tr><td class="label">Tokenizer</td><td>BPE, 256 merges, vocab 512, byte-level fallback, lossless round-trip verified</td></tr>
+      <tr><td class="label">Layers / heads / embd</td><td>6 / 4 / 152</td></tr>
+      <tr><td class="label">Block size</td><td>256</td></tr>
+      <tr><td class="label">Weight tying</td><td>on</td></tr>
+      <tr><td class="label">Init</td><td>std 0.02, scaled by (2·n_layer)⁻⁰·⁵ on residual-projection layers</td></tr>
+      <tr><td class="label">Optimizer</td><td>AdamW, weight decay 0.1 (2D+ params only), grad clip 1.0</td></tr>
+      <tr><td class="label">LR schedule</td><td>100-step warmup → cosine decay to 10% of peak</td></tr>
+      <tr><td class="label">Peak LR</td><td>1e-3</td></tr>
+      <tr><td class="label">Batch size</td><td>16</td></tr>
+      <tr><td class="label">Steps</td><td>2,000 (at cap)</td></tr>
+      <tr><td class="label">Parameters</td><td>1,792,384 (under 2,000,000 cap)</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>Process notes</h2>
+    <p style="font-size:14px;color:#33474F;max-width:70ch;">
+      Every hypothesis, the ablation design isolating the tokenizer in Run 3, the ordering of the LR sweep before the batch sweep, and the call to stop experimenting and lock in Run 6 given the remaining time budget were all directed by the author. A coding assistant was used within the allowed rules to draft this summary page from the author's run-by-run reasoning in RUNLOG.md.
+    </p>
+  </section>
+
+  <footer>
+    dev_eval.txt · sliding-window scoring, 50% context carry-over · 67,702 tokens scored<br>
+    See RUNLOG.md for full run-by-run reasoning and NOTES.md for the condensed rationale.
+  </footer>
+
+</div>
+</body>
+</html>
